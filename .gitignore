@@ -1,0 +1,39 @@
+# OS
+.DS_Store
+
+# dependencies
+quiet-task/node_modules/
+quiet-task/.pnp
+quiet-task/.pnp.*
+quiet-task/.yarn/*
+!quiet-task/.yarn/patches
+!quiet-task/.yarn/plugins
+!quiet-task/.yarn/releases
+!quiet-task/.yarn/versions
+
+# testing
+quiet-task/coverage/
+
+# Next.js
+quiet-task/.next/
+quiet-task/out/
+quiet-task/build/
+
+# env
+quiet-task/.env*
+
+# Vercel
+quiet-task/.vercel/
+
+# TypeScript
+quiet-task/*.tsbuildinfo
+quiet-task/next-env.d.ts
+
+# misc
+*.pem
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

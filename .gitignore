@@ -2,32 +2,32 @@
 .DS_Store
 
 # dependencies
-quiet-task/node_modules/
-quiet-task/.pnp
-quiet-task/.pnp.*
-quiet-task/.yarn/*
-!quiet-task/.yarn/patches
-!quiet-task/.yarn/plugins
-!quiet-task/.yarn/releases
-!quiet-task/.yarn/versions
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # testing
-quiet-task/coverage/
+coverage/
 
 # Next.js
-quiet-task/.next/
-quiet-task/out/
-quiet-task/build/
+.next/
+out/
+build/
 
 # env
-quiet-task/.env*
+.env*
 
 # Vercel
-quiet-task/.vercel/
+.vercel/
 
 # TypeScript
-quiet-task/*.tsbuildinfo
-quiet-task/next-env.d.ts
+*.tsbuildinfo
+next-env.d.ts
 
 # misc
 *.pem

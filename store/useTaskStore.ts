@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 import { toDateString } from "@/lib/date";
 import { getSiblings, nextSortOrder, taskSortKey } from "@/lib/taskOrder";
 import { collectDescendantIds } from "@/lib/taskTree";
-import type { Goal, Task, UserProfile } from "@/types";
+import type { Goal, Memo, Task, UserProfile } from "@/types";
 
 type TaskInput = {
   title: string;
@@ -19,6 +19,7 @@ type TaskInput = {
 type TaskStore = {
   tasks: Task[];
   goals: Goal[];
+  memos: Memo[];
   profile: UserProfile;
   hydrated: boolean;
   setHydrated: (value: boolean) => void;
@@ -36,6 +37,9 @@ type TaskStore = {
   detachTaskFromGoal: (id: string) => void;
   addGoal: (title: string) => Goal;
   deleteGoal: (id: string) => void;
+  addMemo: (title?: string) => Memo;
+  updateMemo: (id: string, updates: Partial<Pick<Memo, "title" | "content">>) => void;
+  deleteMemo: (id: string) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
 };
 
@@ -62,11 +66,23 @@ function createGoal(title: string): Goal {
   };
 }
 
+function createMemo(title?: string): Memo {
+  const now = new Date().toISOString();
+  return {
+    id: crypto.randomUUID(),
+    title: title?.trim() || "無題のメモ",
+    content: "",
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
 export const useTaskStore = create<TaskStore>()(
   persist(
     (set) => ({
       tasks: [],
       goals: [],
+      memos: [],
       profile: {
         name: "",
         role: "",
@@ -239,6 +255,27 @@ export const useTaskStore = create<TaskStore>()(
         set((state) => ({
           goals: state.goals.filter((goal) => goal.id !== id),
         })),
+      addMemo: (title) => {
+        const memo = createMemo(title);
+        set((state) => ({ memos: [memo, ...state.memos] }));
+        return memo;
+      },
+      updateMemo: (id, updates) =>
+        set((state) => ({
+          memos: state.memos.map((memo) =>
+            memo.id === id
+              ? {
+                  ...memo,
+                  ...updates,
+                  updatedAt: new Date().toISOString(),
+                }
+              : memo
+          ),
+        })),
+      deleteMemo: (id) =>
+        set((state) => ({
+          memos: state.memos.filter((memo) => memo.id !== id),
+        })),
       updateProfile: (updates) =>
         set((state) => ({
           profile: { ...state.profile, ...updates },
@@ -249,6 +286,7 @@ export const useTaskStore = create<TaskStore>()(
       partialize: (state) => ({
         tasks: state.tasks,
         goals: state.goals,
+        memos: state.memos,
         profile: state.profile,
       }),
       onRehydrateStorage: () => (state) => {

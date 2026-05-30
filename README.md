@@ -5,7 +5,6 @@ Thingsライクな、静かなAIタスク管理アプリ（PoC）
 ## セットアップ
 
 ```bash
-cd quiet-task
 npm install
 cp .env.example .env.local
 # .env.local に OPENAI_API_KEY を設定

@@ -34,3 +34,11 @@ export type ParsedTask = {
   dueDate?: string;
   scheduledDate?: string;
 };
+
+export type Memo = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+};

@@ -1,10 +1,10 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { toDateString } from "@/lib/date";
 import { getSiblings, nextSortOrder, taskSortKey } from "@/lib/taskOrder";
 import { collectDescendantIds } from "@/lib/taskTree";
+import type { UserDataPayload } from "@/types/userData";
 import type { Goal, Memo, Task, UserProfile } from "@/types";
 
 type TaskInput = {
@@ -41,6 +41,7 @@ type TaskStore = {
   updateMemo: (id: string, updates: Partial<Pick<Memo, "title" | "content">>) => void;
   deleteMemo: (id: string) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
+  replaceFromCloud: (payload: UserDataPayload) => void;
 };
 
 function createTask(input: TaskInput, sortOrder: number): Task {
@@ -77,9 +78,7 @@ function createMemo(title?: string): Memo {
   };
 }
 
-export const useTaskStore = create<TaskStore>()(
-  persist(
-    (set) => ({
+export const useTaskStore = create<TaskStore>()((set) => ({
       tasks: [],
       goals: [],
       memos: [],
@@ -280,18 +279,16 @@ export const useTaskStore = create<TaskStore>()(
         set((state) => ({
           profile: { ...state.profile, ...updates },
         })),
-    }),
-    {
-      name: "quiet-task-storage",
-      partialize: (state) => ({
-        tasks: state.tasks,
-        goals: state.goals,
-        memos: state.memos,
-        profile: state.profile,
-      }),
-      onRehydrateStorage: () => (state) => {
-        state?.setHydrated(true);
-      },
-    }
-  )
-);
+      replaceFromCloud: (payload) =>
+        set({
+          tasks: payload.tasks,
+          goals: payload.goals,
+          memos: payload.memos,
+          profile: payload.profile,
+        }),
+}));
+
+export function getTaskStorePayload(): UserDataPayload {
+  const { tasks, goals, memos, profile } = useTaskStore.getState();
+  return { tasks, goals, memos, profile };
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthSection } from "@/features/settings/AuthSection";
 import { useTaskStore } from "@/store/useTaskStore";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,6 +14,8 @@ export function SettingsView() {
       <header className="mb-10">
         <h2 className="text-4xl font-semibold tracking-tight">Settings</h2>
       </header>
+
+      <AuthSection />
 
       <div className="space-y-5 rounded-xl border border-border/60 p-5">
         <label className="block space-y-2">

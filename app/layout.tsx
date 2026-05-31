@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
-import { StoreHydration } from "@/components/StoreHydration";
+import { CloudSync } from "@/components/CloudSync";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className={inter.variable}>
       <body className="font-sans">
-        <StoreHydration />
+        <CloudSync />
         <AppShell>{children}</AppShell>
       </body>
     </html>

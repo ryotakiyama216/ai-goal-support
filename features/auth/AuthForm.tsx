@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatAuthError } from "@/lib/authErrors";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured, supabaseConfigHint } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 type AuthMode = "login" | "signup";
@@ -109,9 +109,7 @@ export function AuthForm() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <p className="text-sm text-muted-foreground">
-        `.env.local` に Supabase の URL と anon key を設定してください。
-      </p>
+      <p className="text-sm text-muted-foreground">{supabaseConfigHint()}</p>
     );
   }
 

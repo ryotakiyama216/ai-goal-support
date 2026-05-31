@@ -5,7 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured, supabaseConfigHint } from "@/lib/supabase/client";
 import { useTaskStore } from "@/store/useTaskStore";
 
 export function AuthSection() {
@@ -53,9 +53,7 @@ export function AuthSection() {
     return (
       <section className="mb-8 rounded-xl border border-border/60 p-5">
         <h3 className="mb-2 text-sm font-medium">アカウント</h3>
-        <p className="text-sm text-muted-foreground">
-          Supabase の環境変数が未設定です。
-        </p>
+        <p className="text-sm text-muted-foreground">{supabaseConfigHint()}</p>
       </section>
     );
   }
